@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="OrangeHRM Test Suite" parallel="false" thread-count="1" verbose="2">
+
+    <listeners>
+        <listener class-name="com.orangehrm.utils.TestListener"/>
+    </listeners>
+
+    <test name="Login Page Tests" preserve-order="true">
+        <classes>
+            <class name="com.orangehrm.tests.LoginTest">
+                <methods>
+                    <include name="testLoginPageTitle"/>
+                    <include name="testLoginPageElementsVisibility"/>
+                    <include name="testLoginTitleText"/>
+                    <include name="testSuccessfulLogin"/>
+                    <include name="testLoginWithInvalidCredentials"/>
+                    <include name="testLoginWithEmptyFields"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>

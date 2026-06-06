@@ -1,0 +1,49 @@
+name: OrangeHRM Test Automation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Run tests with Maven
+      run: mvn clean test
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: target/surefire-reports/
+        retention-days: 30
+
+    - name: Upload Extent Reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: extent-reports
+        path: test-output/
+        retention-days: 30
+
+    - name: Publish Test Report
+      if: always()
+      uses: dorny/test-reporter@v1
+      with:
+        name: TestNG Results
+        path: target/surefire-reports/testng-results.xml
+        reporter: 'java-testng'
