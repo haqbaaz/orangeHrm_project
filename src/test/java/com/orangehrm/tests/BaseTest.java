@@ -3,6 +3,7 @@ package com.orangehrm.tests;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -20,7 +21,20 @@ public class BaseTest {
     public void setUp() {
         // Setup Chrome Driver using WebDriverManager
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        
+        // Configure Chrome options for headless mode in CI/CD environments
+        ChromeOptions options = new ChromeOptions();
+        
+        // Check if running in CI/CD (GitHub Actions)
+        String isCI = System.getenv("CI");
+        if (isCI != null && isCI.equals("true")) {
+            options.addArguments("--headless");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+        }
+        
+        driver = new ChromeDriver(options);
 
         // Navigate to OrangeHRM login page
         driver.navigate().to("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
