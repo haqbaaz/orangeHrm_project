@@ -47,10 +47,7 @@ jobs:
         path: test-output/
         retention-days: 30
 
-    - name: Publish Test Report
+    - name: Display Test Summary
       if: always()
-      uses: dorny/test-reporter@v1
-      with:
-        name: TestNG Results
-        path: target/surefire-reports/testng-results.xml
-        reporter: 'testng'
+      run: |
+        echo "Test execution completed. Check artifacts for detailed reports."
