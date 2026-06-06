@@ -5,6 +5,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,7 +23,14 @@ public class ExtentReportManager {
      */
     public static ExtentReports initExtentReports() {
         String timestamp = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
-        String reportPath = System.getProperty("user.dir") + "/test-output/ExtentReports_" + timestamp + ".html";
+        String reportDir = System.getProperty("user.dir") + "/test-output";
+        String reportPath = reportDir + "/ExtentReports_" + timestamp + ".html";
+
+        // Ensure test-output directory exists
+        File directory = new File(reportDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
 
         ExtentSparkReporter sparkReporter = new ExtentSparkReporter(reportPath);
         sparkReporter.config().setTheme(Theme.DARK);
